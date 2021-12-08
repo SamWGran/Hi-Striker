@@ -19,9 +19,9 @@ public class PlayGame : MonoBehaviour
             {
                 case (TouchPhase.Ended):
                     if (PlayerNameText.text == "") {
-                        MenuManager.Shake(PlayerName);
+                        MenuManager.instance.Shake(PlayerName);
                     } else {
-                        MenuManager.LoadGame(PlayerNameText.text);
+                        MenuManager.instance.LoadGame(PlayerNameText.text);
                     }
                     break;
                 default: 
