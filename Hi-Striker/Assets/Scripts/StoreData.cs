@@ -5,9 +5,11 @@ using System.IO;
 
 public class StoreData : MonoBehaviour
 {
-    private Vector3[] results = new Vector3[500];
+    public static int frames = 100;
+    private Vector3[] results = new Vector3[frames];
     private int index = 0;
     private string filepath;
+    private bool recordStarted = false, recordFinished = false;
 
     void Awake()
     {
@@ -16,23 +18,38 @@ public class StoreData : MonoBehaviour
 
     void Update()
     {
-        results[index] = Input.acceleration;
-        index++;
-        if (index <= 500) {
-            WriteFile();
-            Debug.Log(results);
+        if (Input.touchCount > 0) {
+            Touch touch = Input.GetTouch(0);
+
+            switch (touch.phase)
+            {
+                case (TouchPhase.Began):
+                    recordStarted = true;
+                    GUI.Label(new Rect(Screen.width / 2, Screen.height / 2, 200f, 200f), "Record Started");
+                    break;
+                case (TouchPhase.Ended):
+                    recordFinished = true;
+                    WriteFile();
+                    break;
+                default: 
+                    break;
+            }
+        }
+
+        if (recordStarted && !recordFinished) {
+            results[index] = Input.acceleration;
+            index++;
         }
     }
 
     void WriteFile()
     {
-        if (!File.Exists(filepath))
+        using (StreamWriter sw = File.CreateText(filepath))
         {
-            using (StreamWriter sw = File.CreateText(filepath))
-            {
-                foreach (Vector3 line in results) {
-                    sw.WriteLine(line.ToString());
-                }
+            string line;
+            foreach (Vector3 vector in results) {
+                line = vector[0].ToString() + ',' + vector[1].ToString() + "," + vector[2].ToString();
+                sw.WriteLine(line);
             }
         }
     }
