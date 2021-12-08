@@ -48,8 +48,7 @@ public class StoreData : MonoBehaviour
         {
             string line;
             foreach (Vector3 vector in results) {
-                sw.WriteLine(vector);
-                line = vector.x + ',' + vector.y + "," + vector.z;
+                line = vector[0].ToString() + ',' + vector[1].ToString() + "," + vector[2].ToString();
                 sw.WriteLine(line);
             }
         }
