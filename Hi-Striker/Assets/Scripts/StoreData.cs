@@ -13,7 +13,8 @@ public class StoreData : MonoBehaviour
 
     void Awake()
     {
-        filepath = Application.persistentDataPath + "/dataMM.txt";
+
+        filepath = Application.persistentDataPath + "/" + PlayerData.PlayerName + ".txt";
     }
 
     void Update()
