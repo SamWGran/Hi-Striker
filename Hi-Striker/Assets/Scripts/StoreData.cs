@@ -20,9 +20,9 @@ public class StoreData : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     void Update()
     {
         if (recordStarted && !recordFinished) {
-            GUI.Label(new Rect(Screen.width / 2, Screen.height / 2, 200f, 200f), "Record Started");
-            results[index] = Input.acceleration;
-            index++;
+            if (index < frames)
+                results[index] = Input.acceleration;
+                index++;
         } else if (recordStarted && recordFinished) {
             WriteFile();
         }
