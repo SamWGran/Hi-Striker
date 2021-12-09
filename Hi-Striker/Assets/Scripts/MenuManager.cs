@@ -44,7 +44,6 @@ public class MenuManager : MonoBehaviour
     {
         Vector3 startTransform = obj.transform.position;
         Vector3 newTransform = obj.transform.position;
-        Debug.Log("W2");
 
         for (int i = 0; i < frames; i++) {
             newTransform.x = startTransform.x + Mathf.Sin(Time.time * 100) * 0.02f;
@@ -56,7 +55,7 @@ public class MenuManager : MonoBehaviour
         obj.transform.position = startTransform;
     }
 
-    public void LoadGame ()
+    private void LoadGame()
     {
         if (playerNameText.text == "") {
             MenuManager.instance.Shake(playerName);
