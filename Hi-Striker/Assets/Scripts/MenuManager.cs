@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager instance;
     [SerializeField]
-    private GameObject TestObj;
+    private GameObject TestObj, playerName;
+    [SerializeField]
+    private Text playerNameText;
+    [SerializeField]
+    private Button playGameButton;
 
     void Awake()
     {
@@ -16,6 +21,11 @@ public class MenuManager : MonoBehaviour
         } else {
             Destroy(this);
         }
+    }
+
+    void Start()
+    {
+        playGameButton.onClick.AddListener(LoadGame);
     }
 
     void Update()
@@ -46,9 +56,13 @@ public class MenuManager : MonoBehaviour
         obj.transform.position = startTransform;
     }
 
-    public void LoadGame(string PlayerName)
+    public void LoadGame ()
     {
-        PlayerData.PlayerName = PlayerName;
-        SceneManager.LoadScene("GameScene");
+        if (playerNameText.text == "") {
+            MenuManager.instance.Shake(playerName);
+        } else {
+            PlayerData.playerName = playerNameText.text;
+            SceneManager.LoadScene("GameScene");
+        }
     }
 }
