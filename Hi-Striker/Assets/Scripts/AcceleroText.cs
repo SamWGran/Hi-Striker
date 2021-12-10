@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextEditor : MonoBehaviour
+public class AcceleroText : MonoBehaviour
 {
     [SerializeField]
     private Text assignedText;

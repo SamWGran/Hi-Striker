@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CapsuleMover : MonoBehaviour
+public class AcceleroMover : MonoBehaviour
 {
     private Vector3 xyz = new Vector3(180.0f, 180.0f, 180.0f);
     private Vector3 frameSum = new Vector3(0,0,0);
