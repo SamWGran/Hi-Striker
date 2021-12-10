@@ -5,7 +5,9 @@ using UnityEngine;
 public class GyroMover : MonoBehaviour
 {
     private Vector3 xyz = new Vector3(180.0f, 180.0f, 180.0f);
-    private Vector3 frameSum = new Vector3(0,0,0);
+    private Vector3 frameSum = new Vector3(0.0f,0.0f,0.0f);
+    private Vector3 angleVector = new Vector3(90.0f, 0.0f, 0.0f);
+
     private static int avgFrames = 30;
     private int actualFrame = 0;
     private Vector3[] gyroFrames = new Vector3[avgFrames];
@@ -21,7 +23,7 @@ public class GyroMover : MonoBehaviour
     void Update()
     {
         addFrame();
-        this.transform.eulerAngles = (frameSum/avgFrames)-new Vector3(90.0f, 0.0f, 0.0f);
+        this.transform.eulerAngles = (frameSum/avgFrames) - angleVector;
     }
 
     private void addFrame()
