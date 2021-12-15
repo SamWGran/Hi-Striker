@@ -15,6 +15,6 @@ public class GyroText : MonoBehaviour
     }
     void Update()
     {
-        assignedText.text = Input.gyro.attitude.ToString();
+        assignedText.text = Input.gyro.attitude.eulerAngles.ToString();
     }
 }
