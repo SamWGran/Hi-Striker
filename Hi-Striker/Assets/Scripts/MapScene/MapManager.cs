@@ -21,12 +21,27 @@ public class MapManager : MonoBehaviour
         canvasRect = cross.transform.parent.gameObject.GetComponent<Canvas>().GetComponent<RectTransform>();
         screenX = canvasRect.rect.width;
         screenY = canvasRect.rect.height;
+        Gyroscope phoneGyro = Input.gyro;
+        phoneGyro.enabled = true;
     }
 
     void Update() {
         phoneTilt = Input.gyro.attitude.eulerAngles;
+
         DebugText.instance.debugText(phoneTilt.ToString());
-        setScreenPos(phoneTilt.y, phoneTilt.x);
+
+        if (phoneTilt.x < 180) {
+            phoneTilt.x = (phoneTilt.x / 180) + 0.5f;
+        } else {
+            phoneTilt.x = (phoneTilt.x - 180.0f)/180.0f;
+        }
+        if (phoneTilt.y < 180) {
+            phoneTilt.y = (phoneTilt.y / 180) + 0.5f;
+        } else {
+            phoneTilt.y = (phoneTilt.y - 180.0f)/180.0f;
+        }
+
+        setScreenPos(phoneTilt.x, phoneTilt.y);
         // setScreenPos(0.5f, 0.5f);
     }
 
