@@ -61,7 +61,7 @@ public class MenuManager : MonoBehaviour
             MenuManager.instance.Shake(playerName);
         } else {
             PlayerData.playerName = playerNameText.text;
-            SceneManager.LoadScene("GameScene");
+            SceneManager.LoadScene("MapScene");
         }
     }
 }
