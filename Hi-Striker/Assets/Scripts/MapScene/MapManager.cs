@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class MapManager : MonoBehaviour
 {
@@ -25,11 +26,20 @@ public class MapManager : MonoBehaviour
     private int currentPoint = -1;
     private AudioSource successAudio;
 
+    // Data storage variables
+    private string filepath;
+    private StreamWriter sw;
+    public bool isRecording = false;
+    public float time;
 
     void Awake() {
         map = GetComponent<Image>();
         map.sprite = maps[Random.Range(0, maps.Length-1)];
         successAudio = gameObject.GetComponent<AudioSource>();
+
+        filepath = Application.persistentDataPath + "/" + PlayerData.playerName + ".txt";
+        sw = File.CreateText(filepath);
+        time = Time.time;
 
         canvasRect = cross.transform.parent.gameObject.GetComponent<Canvas>().GetComponent<RectTransform>();
         screenX = canvasRect.rect.width;
@@ -50,6 +60,11 @@ public class MapManager : MonoBehaviour
     private void StartInstance() {
         currentPoint++;
         if (currentPoint >= points.Length) {
+            time = Time.time - time;
+            if (isRecording) {
+                sw.WriteLine(time.ToString());
+                sw.Close();
+            }
             PlayerData.LoadMenu();
         }
         map.sprite = maps[Random.Range(0, maps.Length-1)];
@@ -90,6 +105,11 @@ public class MapManager : MonoBehaviour
 
             }
             ProximityPlayer.instance.timeBetweenFeedback = GetDistanceTime(coords);
+        }
+
+        if (isRecording) {
+            string line = coords.x.ToString() + ", " + coords.y.ToString();
+            sw.WriteLine(line);
         }
     }
 
