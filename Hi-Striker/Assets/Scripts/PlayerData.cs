@@ -13,6 +13,7 @@ public static class PlayerData
         PlayerData.SetOrder(order);
         SceneManager.LoadScene("MapScene");
     }
+
     public static void SetOrder(int order) {
         PlayerData.haptics = true;
         PlayerData.sound = true;
