@@ -597,6 +597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dd798e6459174bb88ed85af7342c24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugger: {fileID: 0}
 --- !u!114 &1597991804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,7 +631,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: woweeeeee
+  m_Text: Phone debug
 --- !u!222 &1597991805
 CanvasRenderer:
   m_ObjectHideFlags: 0
