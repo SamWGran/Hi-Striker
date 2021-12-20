@@ -5,18 +5,18 @@ using AndroidNativeCore;
 
 public class HapticsTest : MonoBehaviour
 {
-long[] pattern = new long[] {300, 900};
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        AddHaptics.Vibrate(300);
-        AddHaptics.Cancel();
-    }
-
-    // Update is called once per frame
     void Update()
     {
-       
+        Touch touch = Input.GetTouch(0);
+        if (Input.touchCount > 0) {
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    AddHaptics.Vibrate(300);
+                    break;
+                default: 
+                    break;
+            }
+       }
     }
 }
