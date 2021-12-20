@@ -14,6 +14,10 @@ public static class PlayerData
         SceneManager.LoadScene("MapScene");
     }
 
+    public static void LoadMenu() {
+        SceneManager.LoadScene("MenuScene");
+    }
+
     public static void SetOrder(int order) {
         PlayerData.haptics = true;
         PlayerData.sound = true;

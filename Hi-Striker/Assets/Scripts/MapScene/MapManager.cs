@@ -21,56 +21,79 @@ public class MapManager : MonoBehaviour
     private float angleSpan = 180;
 
     // Game variables
-    private Vector2[] points = new Vector2[2];
-    private int currentPoint = 0;
+    private Vector2[] points = new Vector2[3];
+    private int currentPoint = -1;
+    private AudioSource successAudio;
 
 
     void Awake() {
         map = GetComponent<Image>();
         map.sprite = maps[Random.Range(0, maps.Length-1)];
+        successAudio = gameObject.GetComponent<AudioSource>();
+
         canvasRect = cross.transform.parent.gameObject.GetComponent<Canvas>().GetComponent<RectTransform>();
-        
         screenX = canvasRect.rect.width;
         screenY = canvasRect.rect.height;
-
+        StartInstance();
     }
 
     void Start() {
         Gyroscope phoneGyro = Input.gyro;
         phoneGyro.enabled = true;
 
-        points[0] = new Vector2(0.5f, 0.5f);
-        points[1] = new Vector2(-0.75f, 0.2f);
+        points[0] = new Vector2(0.2f, 0.2f);
+        points[1] = new Vector2(0.5f, 0.8f);
+        points[2] = new Vector2(0.2f, 0.8f);
+    }
+
+    // Used when a  point is found
+    private void StartInstance() {
+        currentPoint++;
+        if (currentPoint >= points.Length) {
+            PlayerData.LoadMenu();
+        }
+        map.sprite = maps[Random.Range(0, maps.Length-1)];
+        ProximityPlayer.instance.StartNewPlayer();
+
     }
 
      void Update() {
-        gyro = GyroToUnity(Input.gyro.attitude);
-        Vector3 removeZ = gyro.eulerAngles;
-        gyro = Quaternion.Euler(removeZ.x, 0, removeZ.y);
-
-        // Stores correct orientations
-        if (gyro.eulerAngles.x > 180) {
-            coords.y = gyro.eulerAngles.x - 360;
+        if (ProximityPlayer.instance.playingGame == false) {
+            SetScreenPos(0.5f, 0.5f);
         } else {
-            coords.y = gyro.eulerAngles.x;
-        }
-        if (gyro.eulerAngles.z > 180) {
-            coords.x = gyro.eulerAngles.z - 360;
-        } else {
-            coords.x = gyro.eulerAngles.z;
-        }
+            gyro = GyroToUnity(Input.gyro.attitude);
+            Vector3 removeZ = gyro.eulerAngles;
+            gyro = Quaternion.Euler(removeZ.x, 0, removeZ.y);
 
-        //Normalizes angles and sets to span 0-1
-        coords *= (1/angleSpan);
-        coords += new Vector2(0.5f, 0.5f);
-        coords.x = 1.0f - coords.x;
+            // Stores correct orientations
+            if (gyro.eulerAngles.x > 180) {
+                coords.y = gyro.eulerAngles.x - 360;
+            } else {
+                coords.y = gyro.eulerAngles.x;
+            }
+            if (gyro.eulerAngles.z > 180) {
+                coords.x = gyro.eulerAngles.z - 360;
+            } else {
+                coords.x = gyro.eulerAngles.z;
+            }
 
-        SetScreenPos(coords.x, coords.y);
-        ProximityPlayer.instance.timeBetweenFeedback = GetDistanceTime(coords);
+            //Normalizes angles and sets to span 0-1
+            coords *= (1/angleSpan);
+            coords += new Vector2(0.5f, 0.5f);
+            coords.x = 1.0f - coords.x;
+
+            SetScreenPos(coords.x, coords.y);
+            float time = GetDistanceTime(coords);
+            if (time < 0.2f) {
+                successAudio.Play();
+                StartInstance();
+
+            }
+            ProximityPlayer.instance.timeBetweenFeedback = GetDistanceTime(coords);
+        }
     }
 
     private float GetDistanceTime(Vector2 coords) {
-        // spans 0-sqrt(2)
         Vector2 scaledCoords, scaledPoint, scalar;
         scalar = new Vector2(screenX, screenY);
         scaledCoords = Vector2.Scale(coords, scalar);
@@ -79,7 +102,6 @@ public class MapManager : MonoBehaviour
         float distance = Vector2.Distance(scaledCoords, scaledPoint);
         distance /= Mathf.Sqrt(screenX*screenX + screenY*screenY);
         distance *= 1.9f; distance += 0.1f;
-        DebugText.instance.debugText(distance.ToString());
         return distance;
     }
 

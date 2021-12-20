@@ -7,7 +7,7 @@ public class ProximityPlayer : MonoBehaviour
     [SerializeField]
     private AudioSource player;
     public float timeBetweenFeedback = 1.0f;
-    private bool haptics, sound, playingGame = true;
+    public bool haptics, sound, playingGame;
     public static ProximityPlayer instance;
 
     void Awake() {
@@ -17,13 +17,25 @@ public class ProximityPlayer : MonoBehaviour
             Destroy(this);
         }
     }
+
     void Start()
     {
         haptics = true;
         sound = true;
-        StartCoroutine(Player());
+    }
+    public void StartNewPlayer() {
+        playingGame = false;
+        StopCoroutine(Player());
+        StartCoroutine(PrePlayer());
     }
 
+    private IEnumerator PrePlayer() {
+        for(int i = 0; i < 3; i++) {
+            yield return  new WaitForSeconds(1.0f);
+        }
+        playingGame = true;
+        StartCoroutine(Player());
+    }
     private IEnumerator Player()
     {
 
