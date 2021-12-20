@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProximityPlayer : MonoBehaviour
 {
-    private float timeBetweenFeedback = 0.5f;
+    private float timeBetweenFeedback = 1.0f;
     private bool haptics, sound, playingGame = true;
 
     void Start()
