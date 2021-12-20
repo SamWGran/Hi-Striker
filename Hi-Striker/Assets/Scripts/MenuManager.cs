@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -60,8 +59,7 @@ public class MenuManager : MonoBehaviour
         if (playerNameText.text == "") {
             MenuManager.instance.Shake(playerName);
         } else {
-            PlayerData.playerName = playerNameText.text;
-            SceneManager.LoadScene("GameScene");
+            PlayerData.LoadNewGame(playerNameText.text, 1);
         }
     }
 }
