@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class ProximityPlayer : MonoBehaviour
 {
+    [SerializeField]
+    private AudioSource player;
     private float timeBetweenFeedback = 1.0f;
     private bool haptics, sound, playingGame = true;
 
     void Start()
     {
-        haptics = PlayerData.haptics;
-        sound = PlayerData.sound;
-        Player();
+        haptics = false;
+        sound = true;
+        StartCoroutine(Player());
     }
 
     private IEnumerator Player()
@@ -19,7 +21,7 @@ public class ProximityPlayer : MonoBehaviour
 
         while (playingGame){
             if (sound) {
-                // Play sound
+                player.Play();
             }
             if (haptics) {
                 AddHaptics.Vibrate(200);
