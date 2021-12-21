@@ -15,8 +15,6 @@ public static class PlayerData
         PlayerData.order = order;
         PlayerData.haptics = haptics;
         PlayerData.sound = sound;
-
-        //  PlayerData.SetOrder(order);
         SceneManager.LoadScene("MapScene");
     }
 
@@ -27,9 +25,4 @@ public static class PlayerData
     public static void LoadSuccess() {
         SceneManager.LoadScene("SuccessScene");
     }
-
-    // public static void SetOrder(int order) {
-       // PlayerData.haptics = true;
-        //PlayerData.sound = true;
-    //}
 }
