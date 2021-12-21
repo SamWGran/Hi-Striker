@@ -46,7 +46,6 @@ public class MapManager : MonoBehaviour
             sw = File.CreateText(filepath);
             time = Time.time;
         }
-
         canvasRect = cross.transform.parent.gameObject.GetComponent<Canvas>().GetComponent<RectTransform>();
         screenX = canvasRect.rect.width;
         screenY = canvasRect.rect.height;
@@ -56,10 +55,7 @@ public class MapManager : MonoBehaviour
     void Start() {
         Gyroscope phoneGyro = Input.gyro;
         phoneGyro.enabled = true;
-
-        points[0] = new Vector2(0.2f, 0.2f);
-        points[1] = new Vector2(0.5f, 0.8f);
-        points[2] = new Vector2(0.2f, 0.8f);
+        SetupPoints();
     }
 
     private void SetupPoints() {
@@ -67,19 +63,15 @@ public class MapManager : MonoBehaviour
         if (sound && haptics) {
             points[0] = new Vector2(0.2f, 0.9f);
             points[1] = new Vector2(0.3f, 0.5f);
-            points[2] = new Vector2(0.8f, 0.5f);  
-        
+            points[2] = new Vector2(0.8f, 0.5f);
         } else if (sound) {
-
             points[0] = new Vector2(0.3f, 0.8f);
             points[1] = new Vector2(0.4f, 0.7f);
             points[2] = new Vector2(0.8f, 0.4f);
         } else {
-
             points[0] = new Vector2(0.7f, 0.2f);
             points[1] = new Vector2(0.2f, 0.6f);
             points[2] = new Vector2(0.9f, 0.7f);
-
         }
     }
 
@@ -101,7 +93,6 @@ public class MapManager : MonoBehaviour
         map.sprite = maps[Random.Range(0, maps.Length-1)];
         sw.WriteLine("Round nr: " + (currentPoint+1).ToString() + " below");
         ProximityPlayer.instance.StartNewPlayer();
-
     }
 
      void Update() {
@@ -123,7 +114,6 @@ public class MapManager : MonoBehaviour
             } else {
                 coords.x = gyro.eulerAngles.z;
             }
-
             //Normalizes angles and sets to span 0-1
             coords *= (1/angleSpan);
             coords += new Vector2(0.5f, 0.5f);
@@ -134,16 +124,13 @@ public class MapManager : MonoBehaviour
             if (time < 0.2f) {
                 successAudio.Play();
                 StartInstance();
-
             }
             if (isRecording) {
                 string line = coords.x.ToString() + ", " + coords.y.ToString();
                 sw.WriteLine(line);
             }
-
             ProximityPlayer.instance.timeBetweenFeedback = GetDistanceTime(coords);
         }
-
     }
 
     private float GetDistanceTime(Vector2 coords) {
