@@ -22,7 +22,7 @@ public class MapManager : MonoBehaviour
     private float angleSpan = 180;
 
     // Game variables
-    private Vector2[] points;
+    private Vector2[] points = new Vector2[3];
     private bool sound, haptics;
     private int currentPoint = -1;
     private AudioSource successAudio;
@@ -59,7 +59,6 @@ public class MapManager : MonoBehaviour
     }
 
     private void SetupPoints() {
-        points = new Vector2[3];
         if (sound && haptics) {
             points[0] = new Vector2(0.2f, 0.9f);
             points[1] = new Vector2(0.3f, 0.5f);
