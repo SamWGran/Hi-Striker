@@ -50,7 +50,7 @@ public class MapManager : MonoBehaviour
     private void StartInstance() {
         currentPoint++;
         if (currentPoint >= points.Length) {
-            PlayerData.LoadMenu();
+            PlayerData.LoadSuccess();
         }
         map.sprite = maps[Random.Range(0, maps.Length-1)];
         ProximityPlayer.instance.StartNewPlayer();

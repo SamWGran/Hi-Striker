@@ -18,6 +18,10 @@ public static class PlayerData
         SceneManager.LoadScene("MenuScene");
     }
 
+    public static void LoadSuccess() {
+        SceneManager.LoadScene("SuccessScene");
+    }
+
     public static void SetOrder(int order) {
         PlayerData.haptics = true;
         PlayerData.sound = true;
