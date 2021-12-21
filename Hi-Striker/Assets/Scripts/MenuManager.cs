@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
 
 public class MenuManager : MonoBehaviour
 {
@@ -13,6 +13,10 @@ public class MenuManager : MonoBehaviour
     private Text playerNameText;
     [SerializeField]
     private Button playGameButton;
+    [SerializeField]
+    private Toggle HapticsToggle, SoundToggle;
+    [SerializeField]
+    private Dropdown dropdown;
 
     void Awake()
     {
@@ -26,13 +30,6 @@ public class MenuManager : MonoBehaviour
     void Start()
     {
         playGameButton.onClick.AddListener(LoadGame);
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown("w")) {
-            Shake(TestObj);
-        }
     }
 
     public void Shake(GameObject obj)
@@ -60,8 +57,7 @@ public class MenuManager : MonoBehaviour
         if (playerNameText.text == "") {
             MenuManager.instance.Shake(playerName);
         } else {
-            PlayerData.playerName = playerNameText.text;
-            SceneManager.LoadScene("MapScene");
+            PlayerData.LoadNewGame(playerNameText.text, dropdown.captionText.ToString(), HapticsToggle.isOn, SoundToggle.isOn);
         }
     }
 }
