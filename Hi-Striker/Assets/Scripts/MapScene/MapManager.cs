@@ -23,7 +23,7 @@ public class MapManager : MonoBehaviour
 
     // Game variables
     private Vector2[] points;
-    private bool sound, haptic;
+    private bool sound, haptics;
     private int currentPoint = -1;
     private AudioSource successAudio;
 
@@ -64,11 +64,21 @@ public class MapManager : MonoBehaviour
 
     private void SetupPoints() {
         points = new Vector2[3];
-        if (sound && haptic) {
-            
+        if (sound && haptics) {
+            points[0] = new Vector2(0.2f, 0.9f);
+            points[1] = new Vector2(0.3f, 0.5f);
+            points[2] = new Vector2(0.8f, 0.5f);  
+        
         } else if (sound) {
 
+            points[0] = new Vector2(0.3f, 0.8f);
+            points[1] = new Vector2(0.4f, 0.7f);
+            points[2] = new Vector2(0.8f, 0.4f);
         } else {
+
+            points[0] = new Vector2(0.7f, 0.2f);
+            points[1] = new Vector2(0.2f, 0.6f);
+            points[2] = new Vector2(0.9f, 0.7f);
 
         }
     }
