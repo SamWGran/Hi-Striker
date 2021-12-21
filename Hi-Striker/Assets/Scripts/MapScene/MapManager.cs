@@ -22,24 +22,30 @@ public class MapManager : MonoBehaviour
     private float angleSpan = 180;
 
     // Game variables
-    private Vector2[] points = new Vector2[3];
+    private Vector2[] points;
+    private bool sound, haptic;
     private int currentPoint = -1;
     private AudioSource successAudio;
 
     // Data storage variables
     private string filepath;
     private StreamWriter sw;
+    private float time;
     public bool isRecording = false;
-    public float time;
 
     void Awake() {
         map = GetComponent<Image>();
         map.sprite = maps[Random.Range(0, maps.Length-1)];
         successAudio = gameObject.GetComponent<AudioSource>();
 
-        filepath = Application.persistentDataPath + "/" + PlayerData.playerName + ".txt";
-        sw = File.CreateText(filepath);
-        time = Time.time;
+        sound = PlayerData.sound;
+        haptics = PlayerData.haptics;
+
+        if (isRecording) {
+            filepath = Application.persistentDataPath + "/" + PlayerData.playerName + ".txt";
+            sw = File.CreateText(filepath);
+            time = Time.time;
+        }
 
         canvasRect = cross.transform.parent.gameObject.GetComponent<Canvas>().GetComponent<RectTransform>();
         screenX = canvasRect.rect.width;
@@ -56,18 +62,34 @@ public class MapManager : MonoBehaviour
         points[2] = new Vector2(0.2f, 0.8f);
     }
 
+    private void SetupPoints() {
+        points = new Vector2[3];
+        if (sound && haptic) {
+            
+        } else if (sound) {
+
+        } else {
+
+        }
+    }
+
     // Used when a  point is found
     private void StartInstance() {
         currentPoint++;
         if (currentPoint >= points.Length) {
             time = Time.time - time;
             if (isRecording) {
-                sw.WriteLine(time.ToString());
+                sw.WriteLine("Time: " + time.ToString());
+                sw.WriteLine("Name: " + PlayerData.playerName);
+                sw.WriteLine("Haptics: " + PlayerData.haptics.ToString());
+                sw.WriteLine("Sound: " + PlayerData.sound.ToString());
+                // sw.WriteLine("Order: " + PlayerData.order.ToString());
                 sw.Close();
             }
             PlayerData.LoadSuccess();
         }
         map.sprite = maps[Random.Range(0, maps.Length-1)];
+        sw.WriteLine("Round nr: " + (currentPoint+1).ToString() + " below");
         ProximityPlayer.instance.StartNewPlayer();
 
     }
@@ -104,13 +126,14 @@ public class MapManager : MonoBehaviour
                 StartInstance();
 
             }
+            if (isRecording) {
+                string line = coords.x.ToString() + ", " + coords.y.ToString();
+                sw.WriteLine(line);
+            }
+
             ProximityPlayer.instance.timeBetweenFeedback = GetDistanceTime(coords);
         }
 
-        if (isRecording) {
-            string line = coords.x.ToString() + ", " + coords.y.ToString();
-            sw.WriteLine(line);
-        }
     }
 
     private float GetDistanceTime(Vector2 coords) {
