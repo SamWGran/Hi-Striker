@@ -41,6 +41,8 @@ public class MapManager : MonoBehaviour
         sound = PlayerData.sound;
         haptics = PlayerData.haptics;
 
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         if (isRecording) {
             string name = PlayerData.playerName;
             if (sound) {
