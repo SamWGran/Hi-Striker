@@ -6,11 +6,15 @@ using UnityEngine.SceneManagement;
 public static class PlayerData
 {
     public static string playerName { get; set; }
-    public static bool haptics, sound;
+    public static bool haptics { get; set; }
+    public static bool sound { get; set; }
+    public static string order { get; set; }
 
-    public static void LoadNewGame(string name, int order) {
+    public static void LoadNewGame(string name, string order, bool haptics, bool sound) {
         PlayerData.playerName = name;
-        PlayerData.SetOrder(order);
+        PlayerData.order = order;
+        PlayerData.haptics = haptics;
+        PlayerData.sound = sound;
         SceneManager.LoadScene("MapScene");
     }
 
@@ -20,10 +24,5 @@ public static class PlayerData
 
     public static void LoadSuccess() {
         SceneManager.LoadScene("SuccessScene");
-    }
-
-    public static void SetOrder(int order) {
-        PlayerData.haptics = true;
-        PlayerData.sound = true;
     }
 }

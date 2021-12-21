@@ -12,6 +12,10 @@ public class MenuManager : MonoBehaviour
     private Text playerNameText;
     [SerializeField]
     private Button playGameButton;
+    [SerializeField]
+    private Toggle HapticsToggle, SoundToggle;
+    [SerializeField]
+    private Dropdown dropdown;
 
     void Awake()
     {
@@ -51,8 +55,10 @@ public class MenuManager : MonoBehaviour
     {
         if (playerNameText.text == "") {
             MenuManager.instance.Shake(playerName);
+            Debug.Log("Haptics: " + HapticsToggle.isOn);
+            Debug.Log("Sound: " + SoundToggle.isOn);
         } else {
-            PlayerData.LoadNewGame(playerNameText.text, 1);
+            PlayerData.LoadNewGame(playerNameText.text, dropdown.captionText.text, HapticsToggle.isOn, SoundToggle.isOn);
         }
     }
 }

@@ -31,7 +31,7 @@ public class MapManager : MonoBehaviour
     private string filepath;
     private StreamWriter sw;
     private float time;
-    public bool isRecording = false;
+    public bool isRecording;
 
     void Awake() {
         map = GetComponent<Image>();
@@ -41,8 +41,17 @@ public class MapManager : MonoBehaviour
         sound = PlayerData.sound;
         haptics = PlayerData.haptics;
 
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         if (isRecording) {
-            filepath = Application.persistentDataPath + "/" + PlayerData.playerName + ".txt";
+            string name = PlayerData.playerName;
+            if (sound) {
+                name = name + "_haptics";
+            }
+            if (haptics) {
+                name = name + "_sound";
+            }
+            filepath = Application.persistentDataPath + "/" + name + ".txt";
             sw = File.CreateText(filepath);
             time = Time.time;
         }
