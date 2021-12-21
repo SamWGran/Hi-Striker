@@ -27,13 +27,6 @@ public class MenuManager : MonoBehaviour
         playGameButton.onClick.AddListener(LoadGame);
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown("w")) {
-            Shake(TestObj);
-        }
-    }
-
     public void Shake(GameObject obj)
     {
         StartCoroutine(OnShake(obj, 30));
