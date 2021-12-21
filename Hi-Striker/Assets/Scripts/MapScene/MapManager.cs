@@ -65,7 +65,7 @@ public class MapManager : MonoBehaviour
                 sw.WriteLine(time.ToString());
                 sw.Close();
             }
-            PlayerData.LoadMenu();
+            PlayerData.LoadSuccess();
         }
         map.sprite = maps[Random.Range(0, maps.Length-1)];
         ProximityPlayer.instance.StartNewPlayer();
