@@ -93,7 +93,7 @@ public class MapManager : MonoBehaviour
                 sw.WriteLine("Name: " + PlayerData.playerName);
                 sw.WriteLine("Haptics: " + PlayerData.haptics.ToString());
                 sw.WriteLine("Sound: " + PlayerData.sound.ToString());
-                // sw.WriteLine("Order: " + PlayerData.order.ToString());
+                sw.WriteLine("Order: " + PlayerData.order.ToString());
                 sw.Close();
             }
             PlayerData.LoadSuccess();
