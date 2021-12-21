@@ -20,9 +20,10 @@ public class ProximityPlayer : MonoBehaviour
 
     void Start()
     {
-        haptics = true;
-        sound = true;
+        haptics = PlayerData.haptics;
+        sound = PlayerData.sound;
     }
+
     public void StartNewPlayer() {
         playingGame = false;
         StopCoroutine(Player());

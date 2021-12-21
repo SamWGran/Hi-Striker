@@ -55,8 +55,10 @@ public class MenuManager : MonoBehaviour
     {
         if (playerNameText.text == "") {
             MenuManager.instance.Shake(playerName);
+            Debug.Log("Haptics: " + HapticsToggle.isOn);
+            Debug.Log("Sound: " + SoundToggle.isOn);
         } else {
-            PlayerData.LoadNewGame(playerNameText.text, dropdown.captionText.ToString(), HapticsToggle.isOn, SoundToggle.isOn);
+            PlayerData.LoadNewGame(playerNameText.text, dropdown.captionText.text, HapticsToggle.isOn, SoundToggle.isOn);
         }
     }
 }
