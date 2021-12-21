@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class MapManager : MonoBehaviour
 {
@@ -22,15 +23,29 @@ public class MapManager : MonoBehaviour
 
     // Game variables
     private Vector2[] points = new Vector2[3];
+    private bool sound, haptics;
     private int currentPoint = -1;
     private AudioSource successAudio;
 
+    // Data storage variables
+    private string filepath;
+    private StreamWriter sw;
+    private float time;
+    public bool isRecording = false;
 
     void Awake() {
         map = GetComponent<Image>();
         map.sprite = maps[Random.Range(0, maps.Length-1)];
         successAudio = gameObject.GetComponent<AudioSource>();
 
+        sound = PlayerData.sound;
+        haptics = PlayerData.haptics;
+
+        if (isRecording) {
+            filepath = Application.persistentDataPath + "/" + PlayerData.playerName + ".txt";
+            sw = File.CreateText(filepath);
+            time = Time.time;
+        }
         canvasRect = cross.transform.parent.gameObject.GetComponent<Canvas>().GetComponent<RectTransform>();
         screenX = canvasRect.rect.width;
         screenY = canvasRect.rect.height;
@@ -40,21 +55,43 @@ public class MapManager : MonoBehaviour
     void Start() {
         Gyroscope phoneGyro = Input.gyro;
         phoneGyro.enabled = true;
+        SetupPoints();
+    }
 
-        points[0] = new Vector2(0.2f, 0.2f);
-        points[1] = new Vector2(0.5f, 0.8f);
-        points[2] = new Vector2(0.2f, 0.8f);
+    private void SetupPoints() {
+        if (sound && haptics) {
+            points[0] = new Vector2(0.2f, 0.9f);
+            points[1] = new Vector2(0.3f, 0.7f);
+            points[2] = new Vector2(0.8f, 0.2f);
+        } else if (sound) {
+            points[0] = new Vector2(0.3f, 0.8f);
+            points[1] = new Vector2(0.4f, 0.7f);
+            points[2] = new Vector2(0.8f, 0.6f);
+        } else {
+            points[0] = new Vector2(0.7f, 0.2f);
+            points[1] = new Vector2(0.2f, 0.6f);
+            points[2] = new Vector2(0.9f, 0.7f);
+        }
     }
 
     // Used when a  point is found
     private void StartInstance() {
         currentPoint++;
         if (currentPoint >= points.Length) {
+            time = Time.time - time;
+            if (isRecording) {
+                sw.WriteLine("Time: " + time.ToString());
+                sw.WriteLine("Name: " + PlayerData.playerName);
+                sw.WriteLine("Haptics: " + PlayerData.haptics.ToString());
+                sw.WriteLine("Sound: " + PlayerData.sound.ToString());
+                // sw.WriteLine("Order: " + PlayerData.order.ToString());
+                sw.Close();
+            }
             PlayerData.LoadSuccess();
         }
         map.sprite = maps[Random.Range(0, maps.Length-1)];
+        sw.WriteLine("Round nr: " + (currentPoint+1).ToString() + " below");
         ProximityPlayer.instance.StartNewPlayer();
-
     }
 
      void Update() {
@@ -76,7 +113,6 @@ public class MapManager : MonoBehaviour
             } else {
                 coords.x = gyro.eulerAngles.z;
             }
-
             //Normalizes angles and sets to span 0-1
             coords *= (1/angleSpan);
             coords += new Vector2(0.5f, 0.5f);
@@ -87,7 +123,10 @@ public class MapManager : MonoBehaviour
             if (time < 0.2f) {
                 successAudio.Play();
                 StartInstance();
-
+            }
+            if (isRecording) {
+                string line = coords.x.ToString() + ", " + coords.y.ToString();
+                sw.WriteLine(line);
             }
             ProximityPlayer.instance.timeBetweenFeedback = GetDistanceTime(coords);
         }
